@@ -1,15 +1,15 @@
 <!-- navbar -->
-<link rel = "stylesheet" href="main.css"> 
+<link rel = "stylesheet" href="main.css">
 <div class="navbar navbar-default navbar-static-top" role="navigation">
     <div class="container">
- 
- 
+
+
         <div class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
                 <li>
                     <div class="navbar-header">
-            <a class="navbar-brand" href="login.php">Movies</a>
-           
+            <a class="navbar-brand">Movie Mania</a>
+
         </div>
                 </li>
                 <li <?php echo $page_title=="movies" ? "class='active'" : ""; ?> >
@@ -26,7 +26,7 @@
                 </li>
             </ul>
         </div><!--/.nav-collapse -->
- 
+
     </div>
 </div>
 <!-- /navbar -->
