@@ -10,7 +10,7 @@ function getDatabaseConnection() {
     
     // My user information...I could have prompted for password, as well, or stored in the
     // environment, or, or, or (all in the name of better security)
-    $username = 'drearam3';
+    $username = getenv('C9_USER');
     $password = "";
     
     // Establish the connection and then alter how we are tracking errors (look those keywords up)
