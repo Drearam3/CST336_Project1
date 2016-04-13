@@ -31,6 +31,8 @@ if(count($_SESSION['cart_items'])>0){
     // $ids = $ids + " ";
  
     //start table
+    echo "<div class = 'title'><h1>Cart</h1></div>";
+    echo "<div class='cart'>";
     echo "<table class='table table-hover table-responsive table-bordered'>";
  
         // our table heading
@@ -54,7 +56,7 @@ if(count($_SESSION['cart_items'])>0){
           echo "<td align='center'>" . $cart_item['Movie_Genre'] . "</td>"; 
           echo "<td align='center'>" . $cart_item['Movie_Mins'] . "</td>";
           echo "<td>";
-            echo "<a href='remove_from_cart.php?id={$cart_item['Movie_ID']}&name={$cart_item['Movie_Name']}' class='btn btn-danger'>";
+            echo "<a href='remove_from_cart.php?id={$cart_item['Movie_ID']}&name={$cart_item['Movie_Name']}' class='fsSubmitButton2'>";
             echo "<span class='glyphicon glyphicon-remove'></span> Remove from cart";
             echo "</a>";
             echo "</td>";
@@ -62,13 +64,14 @@ if(count($_SESSION['cart_items'])>0){
 
         }
         echo "<tr>";
-                    echo "<td><a href='reciept.php' class='btn btn-success'>";
+                    echo "<td colspan='5' align='center'height='30'><a href='reciept.php' class='fsSubmitButton'>";
                         echo "<span class='glyphicon glyphicon-shopping-cart'></span> Checkout";
                     echo "</a>";
                 echo "</td>";
             echo "</tr>";
  
     echo "</table>";
+    echo "</div>";
     }
 
 else{
