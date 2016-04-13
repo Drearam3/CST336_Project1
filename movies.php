@@ -16,24 +16,36 @@ function displayAllMovies($sql){
     $movies = getDataBySQL($sql, $dbConn);
 
      //Using Form Buttons
-         echo "<table class='table table-hover table-responsive table-bordered' border = '1'>";
+         echo "<table align='center' class='table table-hover table-responsive table-bordered' border = '1'>";
          // our table heading
         echo "<tr>";
             echo "<th class='textAlignLeft'>Movie Name</th>";
             echo "<th>Year</th>";
-            echo "<th>Genre)</th>";
+            echo "<th>Genre</th>";
+            echo "<th>Rating</th>";
             echo "<th>Duration(Mins)</th>";
+            echo "<th>Directed by: </th>";
             echo "<th>Action</th>";
         echo "</tr>";
         foreach ($movies as $movie) {
           echo "<tr rowspan='3'>"; 
-          echo "<td align='center'>" . $movie['Movie_Name'] . "</td>"; 
+          echo "<td align='center'><a class = 'names' href='display.php?id={$movie['Movie_ID']}&name={$movie['Movie_Name']}' class='btn btn-primary'>";
+            echo  $movie['Movie_Name']; 
+            echo "</a></td>"; 
           echo "<td align='center'>" . $movie['Movie_Year'] . "</td>"; 
-          echo "<td align='center'>" . $movie['Movie_Genre'] . "</td>"; 
-          echo "<td align='center'>" . $movie['Movie_Mins'] . "</td>"; 
+          echo "<td align='center'>" . $movie['Movie_Genre'] . "</td>";
+          echo "<td align='center'>" . $movie['Movie_Rating'] . "</td>"; 
+          echo "<td align='center'>" . $movie['Movie_Mins'] . "</td>";
+          $sql2 = "SELECT Director_Name FROM Directors WHERE Director_ID ='" .  $movie['Director_ID1'] . "' OR Director_ID ='" .  $movie['Director_ID2'] . "'";
+            $dirs = getDataBySQL($sql2, $dbConn);
+            echo "<td align='center'>";
+            foreach ($dirs as $dir)
+            {
+                echo $dir['Director_Name'] . "</br>";
+            }
           echo "<td><a href='add_to_cart.php?id={$movie['Movie_ID']}&name={$movie['Movie_Name']}' class='btn btn-primary'>";
-                        echo "<span class='cart'></span> Add to cart";
-                    echo "</a><td>";
+            echo "<span class='cart'></span> Add to cart";
+                    echo "</a></td>";
 
 
 
@@ -52,11 +64,9 @@ function displayAllMovies($sql){
     
         <body>
             <div class="bigContainer">
-                  <h1>Movies</h1>
-                  
-                    <form action = "cart.php">
-                      <button class="fsSubmitButton2" onclick="window.location.href='products.php'">Go to Cart</button>
-                    </form>
+                  <div align="center" class="title"><h1>Movies</h1></div>
+                      
+                    
                
                  <div class = "search">
                         <!--Drop Down options for the user to select an item -->
@@ -69,6 +79,7 @@ function displayAllMovies($sql){
                             <option value = "Movie_Year">Year</option>
                             <option value = "Movie_Genre">Genre</option>
                             <option value = "Movie_Mins">Length</option>
+                            <option value = "Movie_Rating">Rating</option>
                         </select>
                         
                         <b>Genre:</b> 
@@ -109,10 +120,16 @@ function displayAllMovies($sql){
                         </select>
                         
                         
-                        
-                    <input type = 'submit' name = 'submit' value = 'Search' >
+                     &nbsp; &nbsp;   
+                    <input type = 'submit' name = 'submit' value = 'Search' class="fsSubmitButton">
+                    <span class = "buttons">
+                          <form action = "cart.php">
+                      <button class="fsSubmitButton" onclick="window.location.href='products.php'">Go to Cart</button>
+                    </form>
+                      </span>
                     </form>  
                 </div>
+                
             </div>
                
                <?php
@@ -126,11 +143,11 @@ function displayAllMovies($sql){
     $year = $_POST[ 'year' ];
     $yearHigher = $year + 10;
     $length = $_POST[ 'length' ];
-    $direction = $_POST[ 'directon' ];
+    $direction = $_POST[ 'direction' ];
 
     
     //echos the results you put into the drop down boxes
-    echo "<div class = 'results'>
+    echo "<div align='center' class = 'results'>
     <span class = 'r'>Your Search Results for <u>Order By:</u> <b>" . $order . "</b></span> 
     <span class= 'r'><u>Genre:</u> <b>$" . $genre . "</b> </span>
     <span class= 'r'><u>Year:</u> <b>" . $year . " </b></span>
@@ -141,18 +158,18 @@ function displayAllMovies($sql){
     
     
     //SQL comboes based on the user input to the drop-down boxes
-    $query = "SELECT * FROM Movies ";
+    $query = "SELECT * FROM Movies";
     //By Price
     //When the order category is filled out
     if ($genre != NULL)
     {
-        $query .= "WHERE Movie_Genre ='" . $genre . "' ";
+        $query .= " WHERE Movie_Genre ='" . $genre . "' ";
         if($year != NULL)
         {
-            $query .= "AND Movie_Year BETWEEN '" . $year . "' AND '" . $yearHigher . "' ";
+            $query .= " AND Movie_Year BETWEEN '" . $year . "' AND '" . $yearHigher . "' ";
             if($length != NULL)
             {
-                $query .= "AND Movie_Mins < " . $length;
+                $query .= " AND Movie_Mins < " . $length;
                 if($order != NULL)
                 {
                     $query .= " ORDER BY " . $order . " ";
@@ -165,12 +182,12 @@ function displayAllMovies($sql){
             
         }
     }
-    if($year != NULL)
+    else if($year != NULL)
         {
-            $query .= "WHERE Movie_Year BETWEEN '" . $year . "' AND '" . $yearHigher . "' ";
+            $query .= " WHERE Movie_Year BETWEEN '" . $year . "' AND '" . $yearHigher . "' ";
             if($length != NULL)
             {
-                $query .= "AND Movie_Mins < " . $length;
+                $query .= " AND Movie_Mins < " . $length;
                 if($order != NULL)
                 {
                     $query .= " ORDER BY " . $order . " ";
@@ -182,9 +199,9 @@ function displayAllMovies($sql){
             }
             
         }
-    if($length != NULL)
+    else if($length != NULL)
         {
-            $query .= "WHERE Movie_Mins < " . $length;
+            $query .= " WHERE Movie_Mins < " . $length;
             if($order != NULL)
                 {
                     $query .= " ORDER BY " . $order . " ";
@@ -194,7 +211,7 @@ function displayAllMovies($sql){
                     }
                 }
         }
-    if($order != NULL)
+    else if($order != NULL)
                 {
                     $query .= " ORDER BY " . $order . " ";
                     if($direction != NULL)
@@ -202,9 +219,9 @@ function displayAllMovies($sql){
                         $query .= $direction;
                     }
                 }
-    if($direction != NULL)
+    else if($direction != NULL)
         {
-            $query .= $direction;
+            $query .= " ORDER BY Movie_Name " . $direction;
         }
        
  
